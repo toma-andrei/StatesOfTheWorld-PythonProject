@@ -1,38 +1,56 @@
 import urllib.request
 from bs4 import BeautifulSoup
-import re
+import os
 
-from bs4.dammit import encoding_res
+# URL to States of the world Wikipedia page
+states_of_the_world = "https://en.wikipedia.org/wiki/List_of_sovereign_states"
 
-'''URL to States of the world Wikipedia page'''
-states_of_the_world = 'https://ro.wikipedia.org/wiki/Lista_statelor_lumii'
+base_path = "https://en.wikipedia.org"
 
-base_path = 'https://ro.wikipedia.org'
 states_of_the_world_links = []
 
-# //*[@id="mw-content-text"]/div[1]/table/tbody/tr[2]/td[1]/b/a
 
+def get_and_write_URLs():
+    """
+    getURLs function obtains the URLs of each state located on Wikipedia
+    """
 
-def main():
+    if os.path.exists("states_of_the_world.txt"):
+        pass
+
     # obtaining all states page content
     all_states_page = urllib.request.urlopen(states_of_the_world)
 
     # create a BeautifulSoup instance with html parser for easy manipulation of page content
-    soup = BeautifulSoup(all_states_page, 'html.parser')
+    soup = BeautifulSoup(all_states_page, "html.parser")
 
-    # find all tds in the page table
-    table = soup.find('table')
-    tbody = table.find('tbody')
-    trs = tbody.find_all('tr')
-    tds = tbody.find_all('td')
+    anchorTags = soup.select("table > tbody > tr > td > b > a")
 
-    # iterate through every 5th td to get href
-    for i in range(0, len(trs), 5):
-        states_of_the_world_links.append(
-            tds[i].find_all('a')[0]['href'])
+    for a in anchorTags:
+        states_of_the_world_links.append(a["href"])
 
-    print(states_of_the_world_links)
+    file = open("states_of_the_world.txt", "a")
+
+    for url in states_of_the_world_links:
+        file.write(base_path + url + "\n")
+
+    file.close()
 
 
-if __name__ == '__main__':
+def obtain_infos():
+    for link in states_of_the_world_links:
+        url = base_path + link
+        print(link)
+
+
+def test_stuff():
+    print(os.path.getctime("scrapper.py"))
+
+
+def main():
+    # get_and_write_URLs()
+    test_stuff()
+
+
+if __name__ == "__main__":
     main()
