@@ -1,3 +1,7 @@
+#info files
+wiki_states_infos.txt
+states_of_the_world.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
