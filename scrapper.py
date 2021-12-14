@@ -3,6 +3,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import os
 from time import time
+import information_filters as ifilter
 
 # URL to States of the world Wikipedia page
 states_of_the_world = "https://en.wikipedia.org/wiki/List_of_sovereign_states"
@@ -70,7 +71,7 @@ def get_and_write_URLs():
     file.close()
 
 
-def get_site_infos():
+def get_raw_site_infos():
     try:
         links_file = open("states_of_the_world.txt", "r", encoding="utf-8")
         links_file_content = links_file.read()
@@ -86,7 +87,7 @@ def get_site_infos():
 
     try:
         # create or open .txt file containing informations about countries
-        wiki_state_info = open("wiki_states_infos.txt", "a")
+        wiki_state_info = open("wiki_states_infos.txt", "a", encoding="utf-8")
     except Exception as e:
         print(
             "Something went wrong creating/opening 'wiki_states_infos.txt'. Error message: "
@@ -116,6 +117,21 @@ def get_site_infos():
     wiki_state_info.close()
 
 
+def filter_raw_information():
+    file = open("wiki_states_infos.txt", "r")
+
+    raw_content = file.read()
+
+    raw_content_list = raw_content.split(delimiter)
+    raw_content_list.pop()
+
+    country_names = list()
+
+    soup = BeautifulSoup(raw_content, "html.parser")
+
+    country_names = ifilter.filter_country_names(soup)
+
+
 def main():
     """
 
@@ -130,7 +146,8 @@ def main():
         or time() - os.path.getctime("states_of_the_world.txt") >= 259200
     ):
         get_and_write_URLs()
-        get_site_infos()
+        get_raw_site_infos()
+    filter_raw_information()
 
 
 if __name__ == "__main__":
