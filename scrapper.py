@@ -3,7 +3,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import os
 from time import time
-import information_filters as ifilter
+import information_filters as if_filter
 
 # URL to States of the world Wikipedia page
 states_of_the_world = "https://en.wikipedia.org/wiki/List_of_sovereign_states"
@@ -126,10 +126,15 @@ def filter_raw_information():
     raw_content_list.pop()
 
     country_names = list()
+    capital_names = list()
 
-    soup = BeautifulSoup(raw_content, "html.parser")
+    for content in raw_content_list:
+        soup = BeautifulSoup(content, "html.parser")
 
-    country_names = ifilter.filter_country_names(soup)
+        # country_names.append(if_filter.filter_country_names(soup))
+        capital_names.append(if_filter.filter_country_capital(soup))
+
+    file.close()
 
 
 def main():
