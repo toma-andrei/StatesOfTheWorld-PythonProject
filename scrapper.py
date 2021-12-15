@@ -72,6 +72,13 @@ def get_and_write_URLs():
 
 
 def get_raw_site_infos():
+    """
+
+    This function read 'states_of_the_world.txt' file and iterate through all links
+    and obtains informations for a specific state.
+    Informations are written in 'wiki_states_infos.txt' file.
+
+    """
     try:
         links_file = open("states_of_the_world.txt", "r", encoding="utf-8")
         links_file_content = links_file.read()
@@ -94,9 +101,11 @@ def get_raw_site_infos():
             + str(e)
         )
 
+    # iterate through all links
     for link in links_file_content.split():
         print(link)
         try:
+            # obtain full html page of a specific country
             req = urllib.request.urlopen(link)
             wiki_page_content = req.read().decode("utf-8")
         except Exception as e:
@@ -109,8 +118,10 @@ def get_raw_site_infos():
 
         soup = BeautifulSoup(wiki_page_content, "html.parser")
 
+        # obtain table with all informations about a country
         table = soup.find("table", {"class": "infobox"})
 
+        # write to file table with a delimiter for easy future search
         wiki_state_info.write(str(str(table.encode("utf-8")) + delimiter))
 
     links_file.close()
@@ -118,12 +129,24 @@ def get_raw_site_infos():
 
 
 def filter_raw_information():
-    file = open("wiki_states_infos.txt", "r")
+    """
 
-    raw_content = file.read()
+    Read 'wiki_states_info.txt' file and filter each information using BeautifulSoup4.
 
-    raw_content_list = raw_content.split(delimiter)
-    raw_content_list.pop()
+    """
+
+    try:
+        # read file and split information via delimiter
+        file = open("wiki_states_infos.txt", "r")
+        raw_content = file.read()
+        raw_content_list = raw_content.split(delimiter)
+        raw_content_list.pop()
+
+    except Exception as e:
+        print(
+            "Something went wrong opening/reading 'wiki_states_infos.txt' file. Error message: "
+            + str(e)
+        )
 
     country_names = list()
     capital_names = list()
@@ -131,9 +154,8 @@ def filter_raw_information():
     for content in raw_content_list:
         soup = BeautifulSoup(content, "html.parser")
 
-        # country_names.append(if_filter.filter_country_names(soup))
-        capital_names.append(if_filter.filter_country_capital(soup))
-
+        country_names.append(if_filter.filter_country_names(soup))
+        capital_names.extend((if_filter.filter_country_capital(soup)))
     file.close()
 
 

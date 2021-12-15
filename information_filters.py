@@ -3,6 +3,13 @@ import re
 
 
 def filter_country_names(soup):
+    """
+    Filter information obtaining country name.
+
+    @returns: a list of strings representing each country name
+
+    """
+
     country_names = list()
 
     country_names_divs = soup.find_all("div", {"class": "fn org country-name"})
@@ -18,20 +25,42 @@ def filter_country_names(soup):
 
 
 def filter_country_capital(soup):
+    """
+    Filter information obtaining country's capital name.
+
+    @returns: a list of strings representing each country name
+
+    """
+
     capital_names = list()
 
+    # select all table rows
     trs = soup.select("table > tbody > tr")
 
-    # th = [c for c in capital_names_divs.find_all("th", text="Capital")]
     capitals = list()
-
+    # iterate through all table rows
     for tr in trs:
-        th = tr.find_all("th", text="Capital")
+        # select all ths with the content "Capital"
+        th = tr.select("*:-soup-contains(Capital)")
+
+        # get first a from first sibling of the first th
         if th != []:
-            a = th[0].next_sibling.find_all("a")
-            capitals.append(a)
-            break
-    print(len(capitals))
+            if th[0].next_sibling.find_all("a")[0].text != "":
+                a = th[0].next_sibling.find_all("a")
+            else:
+                a = th[0].next_sibling.find_all("a")
+                a = a[1:]
+
+            if a:
+                capitals.append(
+                    utils.clean_text(
+                        utils.remove_unicode_chars(re.sub(r"<.+?>", "", str(a[0])))
+                    )
+                )
+                break
+    if capitals == []:
+        return [""]
+    return capitals
 
 
 def filter_country_population(soup):
