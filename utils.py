@@ -36,3 +36,21 @@ def clean_text(content):
     content_clean = re.sub(r"Republicof", "Republic of", content_clean)
 
     return content_clean
+
+
+def clean_number(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r" million", "000000", content)
+    content_clean = re.sub(r"[a-zA-Z]+|\.", "", content_clean)
+    content_clean = re.sub(r"\\n", "", content_clean)
+    content_clean = re.sub(r"\[\]|\\", "", content_clean)
+    content_clean = re.sub(r"\(.+?\)", "", content_clean)
+    content_clean = re.sub(r"\[.+?\]", "", content_clean)
+    content_clean = re.sub(r",", "", content_clean)
+    content_clean = re.sub(r"[0-9][0-9]-", "", content_clean)
+    content_clean = re.sub(r"[0-9][0-9]-", "", content_clean)
+
+    if " " in content_clean:
+        content_clean = content_clean[: content_clean.index(" ")]
+
+    return content_clean

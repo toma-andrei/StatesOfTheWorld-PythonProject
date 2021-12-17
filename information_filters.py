@@ -5,7 +5,7 @@ import re
 def filter_country_names(soup):
     """
     Filter information obtaining country name.
-
+    @param soup: BeautifulSoup instance containing information about a country
     @returns: a list of strings representing each country name
 
     """
@@ -28,6 +28,7 @@ def filter_country_capital(soup):
     """
     Filter information obtaining country's capital name.
 
+    @param soup: BeautifulSoup instance containing information about a country
     @returns: a list of strings representing each country name
 
     """
@@ -38,6 +39,7 @@ def filter_country_capital(soup):
     trs = soup.select("table > tbody > tr")
 
     capitals = list()
+
     # iterate through all table rows
     for tr in trs:
         # select all ths with the content "Capital"
@@ -64,7 +66,32 @@ def filter_country_capital(soup):
 
 
 def filter_country_population(soup):
-    pass
+    """
+    Filter information obtaining country's population .
+
+    @param soup: BeautifulSoup instance containing information about a country
+    @returns: a string representing each country's population
+
+    """
+
+    # select all table rows
+    trs = soup.select("table > tbody > tr")
+
+    population = "0"
+
+    for tr in trs:
+        # check if tr contains population th
+        trr = tr.select("th:-soup-contains(Population)")
+
+        if trr:
+            # format html to obtain population
+            population = re.sub(
+                r"<img.+?/>", "", str(tr.next_sibling.find_all("td")[0].text)
+            )
+
+            population = utils.clean_number(population.strip())
+
+    return population
 
 
 def filter_country_density(soup):

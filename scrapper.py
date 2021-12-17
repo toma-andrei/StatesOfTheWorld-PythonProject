@@ -150,12 +150,27 @@ def filter_raw_information():
 
     country_names = list()
     capital_names = list()
+    country_population = list()
 
     for content in raw_content_list:
         soup = BeautifulSoup(content, "html.parser")
 
-        country_names.append(if_filter.filter_country_names(soup))
-        capital_names.extend((if_filter.filter_country_capital(soup)))
+        # country_names.append(if_filter.filter_country_names(soup))
+
+        # capital_names.extend((if_filter.filter_country_capital(soup)))
+
+        # country_population.append(if_filter.filter_country_population(soup))
+
+    for i in range(0, len(country_names)):
+        print(
+            country_names[i],
+            " | ",
+            capital_names[i],
+            " | ",
+            country_population[i],
+            "\n",
+        )
+
     file.close()
 
 
