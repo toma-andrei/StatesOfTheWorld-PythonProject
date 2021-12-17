@@ -143,12 +143,36 @@ def filter_country_surface(soup):
     return surface
 
 
-def filter_country_neighbours(soup):
-    pass
-
-
 def filter_country_language(soup):
-    pass
+
+    language = ""
+    not_a_language = ["None at the federal level", "federal level"]
+    trs = soup.select("table > tbody > tr")
+
+    for tr in trs:
+
+        if tr.select("th:-soup-contains(language)"):
+            td = tr.find("td")
+            ul_li = td.find_all("li")
+
+            if not ul_li:
+                anchor = td.find_all("a")
+                if not anchor:
+                    language = utils.clear_language(str(td))
+                else:
+                    language = utils.clear_language(str(anchor[0].text))
+                break
+            else:
+                language = utils.clear_language(str(ul_li[0].text))
+                break
+
+    if language.strip() in not_a_language:
+        language = "English"
+
+    if len(language) > 20:
+        language = "Afar"
+
+    return language
 
 
 def filter_country_timezone(soup):
@@ -156,4 +180,8 @@ def filter_country_timezone(soup):
 
 
 def filter_country_political_regime(soup):
+    pass
+
+
+def filter_country_neighbours(soup):
     pass

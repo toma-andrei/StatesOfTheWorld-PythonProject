@@ -20,6 +20,8 @@ def remove_unicode_chars(content):
         .replace("\\xc3\\xb3", "ó")
         .replace("\\xc3\\xa1", "á")
         .replace("\\xc2\\xa0", "")
+        .replace("\\xc8\\x99", "s")
+        .replace("\\xc4\\x83", "a")
     )
 
     return str(content_clean)
@@ -78,3 +80,13 @@ def clear_surface(content):
     content_clean = re.sub(r"-.*$", "", content_clean)
 
     return content_clean
+
+
+def clear_language(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r"<sup>.+?</sup>", "", content_clean)
+    content_clean = re.sub(r"<.+?>", "", content_clean)
+    content_clean = re.sub(r"\\|\(.+?\)", "", content_clean)
+    content_clean = re.sub(r"\[.+?\]", "", content_clean)
+
+    return content_clean.strip()
