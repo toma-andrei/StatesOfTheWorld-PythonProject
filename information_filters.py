@@ -67,7 +67,7 @@ def filter_country_capital(soup):
 
 def filter_country_population(soup):
     """
-    Filter information obtaining country's population .
+    Filter information obtaining country's population.
 
     @param soup: BeautifulSoup instance containing information about a country
     @returns: a string representing each country's population
@@ -95,7 +95,29 @@ def filter_country_population(soup):
 
 
 def filter_country_density(soup):
-    pass
+    """
+    Filter information obtaining country's density.
+
+    @param soup: BeautifulSoup instance containing information about a country
+    @returns: a string representing each country's density
+
+    """
+
+    # select all table rows
+    trs = soup.select("table > tbody > tr")
+
+    density = "0"
+
+    for tr in trs:
+        # check if tr contains Density th
+        if tr.select("th:-soup-contains(Density)"):
+            td = tr.find_all("td")
+
+            # filter density value
+            density = utils.clear_density(td[0].text)
+            break
+
+    return density
 
 
 def filter_country_surface(soup):
