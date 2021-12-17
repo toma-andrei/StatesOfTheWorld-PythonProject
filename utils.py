@@ -19,6 +19,7 @@ def remove_unicode_chars(content):
         .replace("\\xc3\\xba", "ú")
         .replace("\\xc3\\xb3", "ó")
         .replace("\\xc3\\xa1", "á")
+        .replace("\\xc2\\xa0", "")
     )
 
     return str(content_clean)
@@ -60,9 +61,20 @@ def clear_density(content):
     content_clean = content.strip()
     content_clean = re.sub(r"/km.+?", "", content_clean)
     content_clean = re.sub(r"\(.+?\)", "", content_clean)
+    content_clean = re.sub(r",|\[.+?\]", "", content_clean)
+    content_clean = re.sub(r" or .*$", "", content_clean)
+    content_clean = re.sub(r"/sq\\xc2\\xa0mi  ", "", content_clean)
+    return content_clean
+
+
+def clear_surface(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r"\\|\(.+?\)", "", content_clean)
     content_clean = re.sub(r"\[.+?\]", "", content_clean)
     content_clean = re.sub(r"/sq\\xc2\\xa0mi  ", "", content_clean)
     content_clean = re.sub(r" or .*$", "", content_clean)
     content_clean = re.sub(r",", "", content_clean)
+    content_clean = re.sub(r"[a-z].*$", "", content_clean)
+    content_clean = re.sub(r"-.*$", "", content_clean)
 
     return content_clean

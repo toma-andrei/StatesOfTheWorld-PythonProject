@@ -121,7 +121,26 @@ def filter_country_density(soup):
 
 
 def filter_country_surface(soup):
-    pass
+    """
+    Filter information obtaining country's surface.
+
+    @param soup: BeautifulSoup instance containing information about a country
+    @returns: a string representing each country's area
+
+    """
+
+    # select all table rows
+    trs = soup.select("table > tbody > tr")
+
+    surface = "0"
+
+    for tr in trs:
+        if tr.select("th:-soup-contains(Area)"):
+            surface = utils.remove_unicode_chars(
+                utils.clear_surface((tr.next_sibling).find("td").text)
+            )
+
+    return surface
 
 
 def filter_country_neighbours(soup):

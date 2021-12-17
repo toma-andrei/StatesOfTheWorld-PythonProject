@@ -152,6 +152,7 @@ def filter_raw_information():
     capital_names = list()
     country_population = list()
     country_density = list()
+    country_surface = list()
 
     cont = 0
 
@@ -162,6 +163,7 @@ def filter_raw_information():
         capital_names.extend((if_filter.filter_country_capital(soup)))
         country_population.append(if_filter.filter_country_population(soup))
         country_density.append(if_filter.filter_country_density(soup))
+        country_surface.append(if_filter.filter_country_surface(soup))
 
     print(cont)
 
@@ -174,6 +176,8 @@ def filter_raw_information():
             country_population[i],
             " | ",
             country_density[i],
+            " | ",
+            country_surface[i],
             "\n",
         )
 
