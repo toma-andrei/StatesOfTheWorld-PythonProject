@@ -176,7 +176,16 @@ def filter_country_language(soup):
 
 
 def filter_country_timezone(soup):
-    pass
+    trs = soup.select("table > tbody > tr")
+    timezone = ""
+    for tr in trs:
+        if tr.select("th:-soup-contains( zone)"):
+            timezone = utils.clear_timezone(
+                utils.remove_unicode_chars(str(tr.find("td")))
+            )
+            break
+
+    return timezone
 
 
 def filter_country_political_regime(soup):

@@ -154,6 +154,7 @@ def filter_raw_information():
     country_density = list()
     country_surface = list()
     country_language = list()
+    country_timezone = list()
     cont = 0
 
     for content in raw_content_list:
@@ -165,6 +166,8 @@ def filter_raw_information():
         country_density.append(if_filter.filter_country_density(soup))
         country_surface.append(if_filter.filter_country_surface(soup))
         country_language.append(if_filter.filter_country_language(soup))
+        country_timezone.append(if_filter.filter_country_timezone(soup))
+
     print(cont)
 
     for i in range(0, len(country_names)):
@@ -180,6 +183,8 @@ def filter_raw_information():
             country_surface[i],
             " | ",
             country_language[i],
+            " | ",
+            country_timezone[i],
             "\n",
         )
 

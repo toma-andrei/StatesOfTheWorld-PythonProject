@@ -22,6 +22,7 @@ def remove_unicode_chars(content):
         .replace("\\xc2\\xa0", "")
         .replace("\\xc8\\x99", "s")
         .replace("\\xc4\\x83", "a")
+        .replace("\\xe2\\x88\\x92", "-")
     )
 
     return str(content_clean)
@@ -88,5 +89,16 @@ def clear_language(content):
     content_clean = re.sub(r"<.+?>", "", content_clean)
     content_clean = re.sub(r"\\|\(.+?\)", "", content_clean)
     content_clean = re.sub(r"\[.+?\]", "", content_clean)
+
+    return content_clean.strip()
+
+
+def clear_timezone(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r"<sup>.+?</sup>", "", content_clean)
+    content_clean = re.sub(r"<.+?>", "", content_clean)
+    content_clean = re.sub(r"\\|\(.+?\)|\)", "", content_clean)
+    content_clean = re.sub(r"\[.+?\]", "", content_clean)
+    content_clean = content_clean.replace("xe2x81xa0xc2xb10 to ", "")
 
     return content_clean.strip()
