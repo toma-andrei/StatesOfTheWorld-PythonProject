@@ -23,6 +23,13 @@ def remove_unicode_chars(content):
         .replace("\\xc8\\x99", "s")
         .replace("\\xc4\\x83", "a")
         .replace("\\xe2\\x88\\x92", "-")
+        .replace("xe2x88x92", "-")
+        .replace("\\xe2\\x80\\x93", "-")
+        .replace("xe2x80x93", "-")
+        .replace("\\xe2\\x80\\x99", "'")
+        .replace("xe2x80x99", "'")
+        .replace("\\xc2\\xa0", "")
+        .replace("xc2xa0", "")
     )
 
     return str(content_clean)
@@ -100,5 +107,17 @@ def clear_timezone(content):
     content_clean = re.sub(r"\\|\(.+?\)|\)", "", content_clean)
     content_clean = re.sub(r"\[.+?\]", "", content_clean)
     content_clean = content_clean.replace("xe2x81xa0xc2xb10 to ", "")
+
+    return content_clean.strip()
+
+
+def clear_regime(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r"<sup>.+?</sup>", "", content_clean)
+    content_clean = re.sub(r"</a>", " ", content_clean)
+    content_clean = re.sub(r"<.+?>|\n", "", content_clean)
+    content_clean = re.sub(r"\\|\(.+?\)", "", content_clean)
+    content_clean = re.sub(r"\[.+?\]", "", content_clean)
+    content_clean = re.sub(r"  |   ", " ", content_clean)
 
     return content_clean.strip()

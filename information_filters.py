@@ -189,7 +189,20 @@ def filter_country_timezone(soup):
 
 
 def filter_country_political_regime(soup):
-    pass
+    trs = soup.select("table > tbody > tr")
+    regime = ""
+    for tr in trs:
+        if tr.select("th:-soup-contains(Government)"):
+            if tr.select("ul"):
+                lis = tr.find_all("li")
+                regime = utils.remove_unicode_chars(utils.clear_regime(str(lis[0])))
+            else:
+                regime = utils.remove_unicode_chars(
+                    utils.clear_regime(str(tr.find("td")))
+                )
+            break
+
+    return regime
 
 
 def filter_country_neighbours(soup):

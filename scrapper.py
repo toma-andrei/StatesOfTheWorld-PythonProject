@@ -155,36 +155,41 @@ def filter_raw_information():
     country_surface = list()
     country_language = list()
     country_timezone = list()
+    country_regime = list()
     cont = 0
 
     for content in raw_content_list:
         soup = BeautifulSoup(content, "html.parser")
 
         country_names.append(if_filter.filter_country_names(soup))
-        capital_names.extend((if_filter.filter_country_capital(soup)))
-        country_population.append(if_filter.filter_country_population(soup))
-        country_density.append(if_filter.filter_country_density(soup))
-        country_surface.append(if_filter.filter_country_surface(soup))
-        country_language.append(if_filter.filter_country_language(soup))
-        country_timezone.append(if_filter.filter_country_timezone(soup))
+        # capital_names.extend((if_filter.filter_country_capital(soup)))
+        # country_population.append(if_filter.filter_country_population(soup))
+        # country_density.append(if_filter.filter_country_density(soup))
+        # country_surface.append(if_filter.filter_country_surface(soup))
+        # country_language.append(if_filter.filter_country_language(soup))
+        # country_timezone.append(if_filter.filter_country_timezone(soup))
+
+        country_regime.append(if_filter.filter_country_political_regime(soup))
 
     print(cont)
 
     for i in range(0, len(country_names)):
         print(
             country_names[i],
+            # " | ",
+            # capital_names[i],
+            # " | ",
+            # country_population[i],
+            # " | ",
+            # country_density[i],
+            # " | ",
+            # country_surface[i],
+            # " | ",
+            # country_language[i],
+            # " | ",
+            # country_timezone[i],
             " | ",
-            capital_names[i],
-            " | ",
-            country_population[i],
-            " | ",
-            country_density[i],
-            " | ",
-            country_surface[i],
-            " | ",
-            country_language[i],
-            " | ",
-            country_timezone[i],
+            country_regime[i],
             "\n",
         )
 
