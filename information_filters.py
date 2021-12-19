@@ -57,8 +57,8 @@ def filter_country_capital(soup):
                 )
                 break
     if capitals == []:
-        return [""]
-    return capitals
+        return ""
+    return capitals[0]
 
 
 def filter_country_population(soup):
