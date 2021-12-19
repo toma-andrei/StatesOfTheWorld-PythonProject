@@ -10,18 +10,14 @@ def filter_country_names(soup):
 
     """
 
-    country_names = list()
+    country_name = ""
 
-    country_names_divs = soup.find_all("div", {"class": "fn org country-name"})
+    country_name_divs = soup.find("div", {"class": "fn org country-name"})
 
-    for country in country_names_divs:
-        country_names.append(
-            utils.clean_text(
-                utils.remove_unicode_chars(re.sub(r"<.+?>", "", country.text))
-            )
-        )
-
-    return country_names
+    for country in country_name_divs:
+        country_name = utils.clean_country_name(str(country))
+        break
+    return country_name
 
 
 def filter_country_capital(soup):
@@ -206,4 +202,8 @@ def filter_country_political_regime(soup):
 
 
 def filter_country_neighbours(soup):
-    pass
+    paragraph = soup.select("p:-soup-contains(border)")
+    if paragraph:
+        print(paragraph[0].text, "\n=================================\n")
+        return 1
+    return 0

@@ -13,6 +13,7 @@ base_path = "https://en.wikipedia.org"
 states_of_the_world_links = []
 
 delimiter = "###08sept###\n\n"
+delimiter_p = "###08sept###\n\n"
 
 
 def get_and_write_URLs():
@@ -58,7 +59,7 @@ def get_and_write_URLs():
 
     # open and write to file full URL of each state
     try:
-        file = open("states_of_the_world.txt", "a", encoding="utf-8")
+        file = open("states_of_the_world.txt", "a", encoding="utf8")
     except Exception as e:
         print(
             "Something went wrong creating/opening 'states_of_the_world.txt'. Error message: "
@@ -80,7 +81,7 @@ def get_raw_site_infos():
 
     """
     try:
-        links_file = open("states_of_the_world.txt", "r", encoding="utf-8")
+        links_file = open("states_of_the_world.txt", "r", encoding="utf8")
         links_file_content = links_file.read()
     except Exception as e:
         print(
@@ -94,7 +95,7 @@ def get_raw_site_infos():
 
     try:
         # create or open .txt file containing informations about countries
-        wiki_state_info = open("wiki_states_infos.txt", "a", encoding="utf-8")
+        wiki_state_info = open("wiki_states_infos.txt", "a", encoding="utf8")
     except Exception as e:
         print(
             "Something went wrong creating/opening 'wiki_states_infos.txt'. Error message: "
@@ -107,7 +108,7 @@ def get_raw_site_infos():
         try:
             # obtain full html page of a specific country
             req = urllib.request.urlopen(link)
-            wiki_page_content = req.read().decode("utf-8")
+            wiki_page_content = req.read().decode("utf8")
         except Exception as e:
             print(
                 "Something went wrong requesting '"
@@ -122,7 +123,7 @@ def get_raw_site_infos():
         table = soup.find("table", {"class": "infobox"})
 
         # write to file table with a delimiter for easy future search
-        wiki_state_info.write(str(str(table.encode("utf-8")) + delimiter))
+        wiki_state_info.write(str(str(table)) + delimiter)
 
     links_file.close()
     wiki_state_info.close()
@@ -137,7 +138,7 @@ def filter_raw_information():
 
     try:
         # read file and split information via delimiter
-        file = open("wiki_states_infos.txt", "r")
+        file = open("wiki_states_infos.txt", "r", encoding="utf8")
         raw_content = file.read()
         raw_content_list = raw_content.split(delimiter)
         raw_content_list.pop()
@@ -162,13 +163,12 @@ def filter_raw_information():
         soup = BeautifulSoup(content, "html.parser")
 
         country_names.append(if_filter.filter_country_names(soup))
-        # capital_names.extend((if_filter.filter_country_capital(soup)))
-        # country_population.append(if_filter.filter_country_population(soup))
-        # country_density.append(if_filter.filter_country_density(soup))
-        # country_surface.append(if_filter.filter_country_surface(soup))
-        # country_language.append(if_filter.filter_country_language(soup))
-        # country_timezone.append(if_filter.filter_country_timezone(soup))
-
+        capital_names.append((if_filter.filter_country_capital(soup)))
+        country_population.append(if_filter.filter_country_population(soup))
+        country_density.append(if_filter.filter_country_density(soup))
+        country_surface.append(if_filter.filter_country_surface(soup))
+        country_language.append(if_filter.filter_country_language(soup))
+        country_timezone.append(if_filter.filter_country_timezone(soup))
         country_regime.append(if_filter.filter_country_political_regime(soup))
 
     print(cont)
@@ -176,21 +176,20 @@ def filter_raw_information():
     for i in range(0, len(country_names)):
         print(
             country_names[i],
-            # " | ",
-            # capital_names[i],
-            # " | ",
-            # country_population[i],
-            # " | ",
-            # country_density[i],
-            # " | ",
-            # country_surface[i],
-            # " | ",
-            # country_language[i],
-            # " | ",
-            # country_timezone[i],
+            " | ",
+            capital_names[i],
+            " | ",
+            country_population[i],
+            " | ",
+            country_density[i],
+            " | ",
+            country_surface[i],
+            " | ",
+            country_language[i],
+            " | ",
+            country_timezone[i],
             " | ",
             country_regime[i],
-            "\n",
         )
 
     file.close()
