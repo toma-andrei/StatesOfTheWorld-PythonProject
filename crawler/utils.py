@@ -30,6 +30,9 @@ def remove_unicode_chars(content):
         .replace("xe2x80x99", "'")
         .replace("\\xc2\\xa0", "")
         .replace("xc2xa0", "")
+        .replace(" ", " ")
+        .replace("sq mi", "")
+        .replace("⁠", "")
     )
 
     return str(content_clean)
@@ -45,7 +48,7 @@ def clean_country_name(content):
     content_clean = re.sub(r"Republicof", "Republic of", content_clean)
     content_clean = re.sub(r"ofSão", "of São", content_clean)
 
-    return content_clean
+    return content_clean.strip()
 
 
 def clean_text(content):
@@ -60,7 +63,7 @@ def clean_text(content):
     content_clean = re.sub(r"Republicof", "Republic of", content_clean)
     content_clean = re.sub(r"ofSão", "of São", content_clean)
 
-    return content_clean
+    return content_clean.strip()
 
 
 def clean_number(content):
@@ -79,7 +82,7 @@ def clean_number(content):
     if " " in content_clean:
         content_clean = content_clean[: content_clean.index(" ")]
 
-    return content_clean
+    return content_clean.strip()
 
 
 def clear_density(content):
@@ -89,7 +92,7 @@ def clear_density(content):
     content_clean = re.sub(r",|\[.+?\]", "", content_clean)
     content_clean = re.sub(r" or .*$", "", content_clean)
     content_clean = re.sub(r"/sq\\xc2\\xa0mi  ", "", content_clean)
-    return content_clean
+    return content_clean.strip()
 
 
 def clear_surface(content):
@@ -103,7 +106,7 @@ def clear_surface(content):
     content_clean = re.sub(r"[a-z].*$", "", content_clean)
     content_clean = re.sub(r"-.*$", "", content_clean)
 
-    return content_clean
+    return content_clean.strip()
 
 
 def clear_language(content):
@@ -136,5 +139,14 @@ def clear_regime(content):
     content_clean = re.sub(r"\\|\(.+?\)", "", content_clean)
     content_clean = re.sub(r"\[.+?\]", "", content_clean)
     content_clean = re.sub(r"  |   ", " ", content_clean)
+
+    return content_clean.strip()
+
+
+def clear_currency(content):
+    content_clean = content.strip()
+    content_clean = re.sub(r"\n|\\", "", content_clean)
+    content_clean = re.sub(r"\(.*$", "", content_clean)
+    content_clean = re.sub(r"\[.*$", "", content_clean)
 
     return content_clean.strip()

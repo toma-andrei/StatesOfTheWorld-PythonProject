@@ -1,4 +1,4 @@
-import utils
+import utils as utils
 import re
 
 
@@ -110,7 +110,7 @@ def filter_country_density(soup):
             td = tr.find_all("td")
 
             # filter density value
-            density = utils.clear_density(td[0].text)
+            density = utils.remove_unicode_chars(utils.clear_density(td[0].text))
             break
 
     return density
@@ -176,8 +176,8 @@ def filter_country_timezone(soup):
     timezone = ""
     for tr in trs:
         if tr.select("th:-soup-contains( zone)"):
-            timezone = utils.clear_timezone(
-                utils.remove_unicode_chars(str(tr.find("td")))
+            timezone = utils.remove_unicode_chars(
+                utils.clear_timezone(str(tr.find("td")))
             )
             break
 
@@ -201,9 +201,16 @@ def filter_country_political_regime(soup):
     return regime
 
 
-def filter_country_neighbours(soup):
-    paragraph = soup.select("p:-soup-contains(border)")
-    if paragraph:
-        print(paragraph[0].text, "\n=================================\n")
-        return 1
-    return 0
+def filter_country_currency(soup):
+    trs = soup.select("table > tbody > tr")
+
+    currency = ""
+
+    for tr in trs:
+        if tr.select("th:-soup-contains(Currency)"):
+            currency = utils.remove_unicode_chars(
+                utils.clear_currency(tr.find("td").text)
+            )
+            break
+
+    return currency
