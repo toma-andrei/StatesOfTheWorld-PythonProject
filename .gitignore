@@ -1,6 +1,7 @@
 #info files
 wiki_states_infos.txt
 states_of_the_world.txt
+clean_countries_information.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

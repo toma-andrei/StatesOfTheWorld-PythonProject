@@ -65,6 +65,7 @@ def get_and_write_URLs():
             "Something went wrong creating/opening 'states_of_the_world.txt'. Error message: "
             + str(e)
         )
+        return None
 
     for url in states_of_the_world_links:
         file.write(base_path + url + "\n")
@@ -181,11 +182,11 @@ def filter_raw_information():
     try:
         # create or open .txt file containing informations about countries
         final_file = open(
-            "../Database/clear_countries_information.txt", "a", encoding="utf8"
+            "../Database/clean_countries_information.txt", "a", encoding="utf8"
         )
     except Exception as e:
         print(
-            "Something went wrong creating/opening 'clear_countries_information.txt'. Error message: "
+            "Something went wrong creating/opening 'clean_countries_information.txt'. Error message: "
             + str(e)
         )
 
