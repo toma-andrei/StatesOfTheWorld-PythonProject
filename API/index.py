@@ -1,6 +1,7 @@
 import json
 from flask import Flask
 import sys
+from api_utils import get_json
 
 sys.path.append("../")
 from Database.connection import get_connection_to_database as db_connection
@@ -23,25 +24,17 @@ def all_infos():
 
     data = execute_select(connection, query)
 
-    informations = dict()
-
-    for info in data:
-        informations[info[0]] = {
-            "capital": info[1],
-            "population": info[2],
-            "density": info[3],
-            "surface": info[4],
-            "language": info[5],
-            "timezone": info[6],
-            "regime": info[7],
-            "currency": info[7],
-        }
-    return json.dumps(informations)
+    return get_json(data)
 
 
 @app.route("/top-<int:number>-by-population")
 def get_top_by_population(number):
-    return json.dumps({"number": number})
+    global connection
+
+    query = "SELECT * FROM stateinfo ORDER BY population DESC LIMIT " + str(number)
+    data = execute_select(connection, query)
+    print(number)
+    return get_json(data)
 
 
 app.run()
