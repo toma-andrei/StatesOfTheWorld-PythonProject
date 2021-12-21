@@ -27,14 +27,19 @@ def all_infos():
     return get_json(data)
 
 
-@app.route("/top-<int:number>-by-population")
-def get_top_by_population(number):
+@app.route("/top-<int:number>-by-<string:cell>")
+def get_top_by_cell(number, cell):
     global connection
-
-    query = "SELECT * FROM stateinfo ORDER BY population DESC LIMIT " + str(number)
-    data = execute_select(connection, query)
-    print(number)
-    return get_json(data)
+    if cell in ["population", "surface", "density"]:
+        query = (
+            "SELECT * FROM stateinfo ORDER BY " + cell + " DESC LIMIT " + str(number)
+        )
+        data = execute_select(connection, query)
+        return get_json(data)
+    else:
+        return json.dumps(
+            {"error": "top can be made only on population, surface, density"}
+        )
 
 
 @app.route("/language=<string:lang>")
@@ -66,6 +71,30 @@ def get_timezone(timezone):
 
     data = execute_select(connection, query)
 
+    return get_json(data)
+
+
+@app.route("/regime=<string:regime>")
+def get_by_regime(regime):
+    global connection
+
+    regime = regime.replace("_", " ")
+
+    query = "SELECT * FROM stateinfo WHERE regime LIKE '%" + regime + "%'"
+
+    data = execute_select(connection, query)
+    return get_json(data)
+
+
+@app.route("/<string:country>")
+def get_country(country):
+    global connection
+
+    country = country.replace("_", " ")
+
+    query = "SELECT * FROM stateinfo WHERE LOWER(name) LIKE '%" + country.lower() + "%'"
+
+    data = execute_select(connection, query)
     return get_json(data)
 
 
