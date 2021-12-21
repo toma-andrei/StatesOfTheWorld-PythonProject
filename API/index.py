@@ -37,4 +37,36 @@ def get_top_by_population(number):
     return get_json(data)
 
 
+@app.route("/language=<string:lang>")
+def get_by_language(lang):
+    global connection
+
+    query = (
+        "SELECT * FROM stateinfo WHERE LOWER(language) LIKE '%" + (lang.lower()) + "%'"
+    )
+    data = execute_select(connection, query)
+    return get_json(data)
+
+
+@app.route("/timezone=<string:timezone>")
+def get_timezone(timezone):
+    global connection
+    constant = timezone[:3]
+    value = timezone[3:]
+    if value:
+        query = (
+            "SELECT * FROM stateinfo WHERE timezone LIKE '%"
+            + (constant)
+            + "%' AND timezone LIKE '%"
+            + (value)
+            + "%'"
+        )
+    else:
+        query = "SELECT * FROM stateinfo WHERE timezone LIKE '%" + (constant) + "%'"
+
+    data = execute_select(connection, query)
+
+    return get_json(data)
+
+
 app.run()
