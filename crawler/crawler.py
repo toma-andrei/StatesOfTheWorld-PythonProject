@@ -17,8 +17,8 @@ def get_and_write_URLs():
     """
 
     get_and_write_URLs() function obtains the URLs of each state located on
-    Wikipedia 'List of states' page with BeautifulSoup library and saves content
-    on states_of_the_world.txt file.
+    Wikipedia 'List of states' page with BeautifulSoup library and saves
+    content on states_of_the_world.txt file.
 
     """
 
@@ -30,14 +30,14 @@ def get_and_write_URLs():
         all_states_page = req.read().decode("utf-8")
     except Exception as e:
         print(
-            "Something went wrong requesting '"
-            + states_of_the_world
-            + "' link. Error message: "
-            + str(e)
+            "Something went wrong requesting '" + states_of_the_world +
+            "' link. Error message: " +
+            str(e)
         )
 
     try:
-        # create a BeautifulSoup instance with html parser for easy manipulation of page content
+        # create a BeautifulSoup instance with html parser for
+        # easy manipulation of page content
         soup = BeautifulSoup(all_states_page, "html.parser")
 
         # select all anchor tags from states table
@@ -49,8 +49,8 @@ def get_and_write_URLs():
 
     except Exception as e:
         print(
-            "Something went wrong obtaing links with BeautifulSoup. Error message: "
-            + str(e)
+            "Something went wrong obtaing links with BeautifulSoup. \
+            Error message: " + str(e)
         )
 
     # remove old file if it exists
@@ -59,14 +59,16 @@ def get_and_write_URLs():
 
     # open and write to file full URL of each state
     try:
-        file = open("informations/states_of_the_world.txt", "w", encoding="utf8")
+        file = open("informations/states_of_the_world.txt",
+                    "w", encoding="utf8")
         file.close()
-        file = open("informations/states_of_the_world.txt", "a", encoding="utf8")
+        file = open("informations/states_of_the_world.txt",
+                    "a", encoding="utf8")
 
     except Exception as e:
         print(
-            "Something went wrong creating/opening 'states_of_the_world.txt'. Error message: "
-            + str(e)
+            "Something went wrong creating/opening 'states_of_the_world.txt'. \
+            Error message: " + str(e)
         )
         return None
 
@@ -79,18 +81,18 @@ def get_and_write_URLs():
 def get_raw_site_infos():
     """
 
-    This function read 'states_of_the_world.txt' file and iterate through all links
-    and obtains informations for a specific state.
-    Informations are written in 'wiki_states_infos.txt' file.
-
+    This function read 'states_of_the_world.txt' file and iterate
+    through all links and obtains informations for a specific
+    state. Informations are written in 'wiki_states_infos.txt' file.
     """
     try:
-        links_file = open("informations/states_of_the_world.txt", "r", encoding="utf8")
+        links_file = open(
+            "informations/states_of_the_world.txt", "r", encoding="utf8")
         links_file_content = links_file.read()
     except Exception as e:
         print(
-            "Something went wrong creating/opening/reading 'states_of_the_world.txt'. Error message: "
-            + str(e)
+            "Something went wrong creating/opening/reading \
+            'states_of_the_world.txt'. Error message: " + str(e)
         )
 
     # remove old file if it exists
@@ -104,8 +106,8 @@ def get_raw_site_infos():
         )
     except Exception as e:
         print(
-            "Something went wrong creating/opening 'wiki_states_infos.txt'. Error message: "
-            + str(e)
+            "Something went wrong creating/opening 'wiki_states_infos.txt'.\
+            Error message: " + str(e)
         )
 
     # iterate through all links
@@ -117,10 +119,8 @@ def get_raw_site_infos():
             wiki_page_content = req.read().decode("utf8")
         except Exception as e:
             print(
-                "Something went wrong requesting '"
-                + states_of_the_world
-                + "' link. Error message: "
-                + str(e)
+                "Something went wrong requesting '" + states_of_the_world +
+                "' link. Error message: " + str(e)
             )
 
         soup = BeautifulSoup(wiki_page_content, "html.parser")
@@ -137,9 +137,8 @@ def get_raw_site_infos():
 
 def filter_raw_information():
     """
-
-    Read 'wiki_states_info.txt' file and filter each information using BeautifulSoup4.
-
+    Read 'wiki_states_info.txt' file and filter each information
+    using BeautifulSoup4.
     """
 
     try:
@@ -151,8 +150,8 @@ def filter_raw_information():
 
     except Exception as e:
         print(
-            "Something went wrong opening/reading 'wiki_states_infos.txt' file. Error message: "
-            + str(e)
+            "Something went wrong opening/reading 'wiki_states_infos.txt' file.\
+             Error message: " + str(e)
         )
 
     country_names = list()
@@ -165,13 +164,13 @@ def filter_raw_information():
     country_regime = list()
     country_currency = list()
 
-    #iterate through all informations about a country at a time
+    # iterate through all informations about a country at a time
     for content in raw_content_list:
 
-        #create a soup instance
+        # create a soup instance
         soup = BeautifulSoup(content, "html.parser")
 
-        #get all informations about a country and put them to lists
+        # get all informations about a country and put them to lists
         country_names.append(if_filter.filter_country_names(soup))
         capital_names.append((if_filter.filter_country_capital(soup)))
         country_population.append(if_filter.filter_country_population(soup))
@@ -192,34 +191,26 @@ def filter_raw_information():
             "../Database/clean_countries_information.txt", "w", encoding="utf8"
         )
     except Exception as e:
-        print(
-            "Something went wrong creating/opening 'clean_countries_information.txt'. Error message: "
-            + str(e)
-        )
+        print("Something went wrong creating/opening \
+        'clean_countries_information.txt'" +
+              "Error message: " + str(e)
+              )
 
-    #concat all information separated with |
+    # concat all information separated with |
     for i in range(0, len(country_names)):
         line = (
-            country_names[i]
-            + "|"
-            + capital_names[i]
-            + "|"
-            + country_population[i]
-            + "|"
-            + country_density[i]
-            + "|"
-            + country_surface[i]
-            + "|"
-            + country_language[i]
-            + "|"
-            + country_timezone[i]
-            + "|"
-            + country_regime[i]
-            + "|"
-            + country_currency[i]
-            + "\n"
+            country_names[i] + "|" +
+            capital_names[i] + "|" +
+            country_population[i] + "|" +
+            country_density[i] + "|" +
+            country_surface[i] + "|" +
+            country_language[i] + "|" +
+            country_timezone[i] + "|" +
+            country_regime[i] + "|" +
+            country_currency[i] +
+            "\n"
         )
-        #write information to file
+        # write information to file
         final_file.write(line)
 
     file.close()
@@ -234,10 +225,12 @@ def main():
 
     """
 
-    # functions inside below 'if' are called when there are 3 days past from them creation.
+    # functions inside below 'if' are called when there are 3 days
+    # past from them creation.
     if (
-        not os.path.exists("informations/states_of_the_world.txt")
-        or time() - os.path.getctime("informations/states_of_the_world.txt") >= 259200
+        not os.path.exists("informations/states_of_the_world.txt") or
+        time() - os.path.getctime("informations/states_of_the_world.txt") >=
+        259200
     ):
         get_and_write_URLs()
         get_raw_site_infos()

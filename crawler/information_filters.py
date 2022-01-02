@@ -52,7 +52,8 @@ def filter_country_capital(soup):
             if a:
                 capitals.append(
                     utils.clean_text(
-                        utils.remove_unicode_chars(re.sub(r"<.+?>", "", str(a[0])))
+                        utils.remove_unicode_chars(
+                            re.sub(r"<.+?>", "", str(a[0])))
                     )
                 )
                 break
@@ -110,7 +111,8 @@ def filter_country_density(soup):
             td = tr.find_all("td")
 
             # filter density value
-            density = utils.remove_unicode_chars(utils.clear_density(td[0].text))
+            density = utils.remove_unicode_chars(
+                utils.clear_density(td[0].text))
             break
 
     return density
@@ -191,7 +193,8 @@ def filter_country_political_regime(soup):
         if tr.select("th:-soup-contains(Government)"):
             if tr.select("ul"):
                 lis = tr.find_all("li")
-                regime = utils.remove_unicode_chars(utils.clear_regime(str(lis[0])))
+                regime = utils.remove_unicode_chars(
+                    utils.clear_regime(str(lis[0])))
             else:
                 regime = utils.remove_unicode_chars(
                     utils.clear_regime(str(tr.find("td")))

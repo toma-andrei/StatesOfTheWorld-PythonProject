@@ -1,11 +1,10 @@
+import json
+from api_utils import get_json
+from flask import Flask
 import sys
 sys.path.append("../")
 from Database.query_executor import execute_select
 from Database.connection import get_connection_to_database as db_connection
-from api_utils import get_json
-from flask import Flask
-import json
-
 
 app = Flask(__name__)
 
@@ -91,11 +90,10 @@ def get_timezone(timezone):
 
     if value:
         query = (
-            "SELECT * FROM stateinfo WHERE timezone LIKE '%"
-            + (constant)
-            + "%' AND timezone LIKE '%"
-            + (value)
-            + "%'"
+            "SELECT * FROM stateinfo WHERE timezone LIKE '%" +
+            (constant) +
+            "%' AND timezone LIKE '%" +
+            (value) + "%'"
         )
     else:
         query = "SELECT * FROM stateinfo WHERE timezone LIKE '%" + \
@@ -110,7 +108,8 @@ def get_timezone(timezone):
 def get_by_regime(regime):
     """
     Get all countries with a specific political regime
-    @param regime = political regime on which request is made (Unitary semi-presidential republic, etc...)
+    @param regime = political regime on which request is made\
+        (Unitary semi-presidential republic, etc...)
     """
 
     global connection

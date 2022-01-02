@@ -21,7 +21,7 @@ def create_database(connection, query):
     """
     Create database via query
     @param connection = connection to MySql database
-    @param query = query for creating database 
+    @param query = query for creating database
     """
     cursor = connection.cursor()
     try:
@@ -34,9 +34,9 @@ def get_connection_to_database(host_name, username, password, db_name):
     """
     Obtain a connection to a specific database
     @param host_name = database host name
-    @param username = username for database authentication 
-    @param password = password for database authentication 
-    @param username = database for which connection is requested 
+    @param username = username for database authentication
+    @param password = password for database authentication
+    @param username = database for which connection is requested
 
     """
 

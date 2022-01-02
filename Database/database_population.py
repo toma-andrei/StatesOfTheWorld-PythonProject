@@ -67,15 +67,16 @@ def create_tables():
 
 def populate_db():
     """
-    read clean_countries_information.txt file and write information to stateinfo table
+    read clean_countries_information.txt file and write
+        information to stateinfo table
     """
     try:
         # create or open .txt file containing informations about countries
         file = open("clean_countries_information.txt", "r", encoding="utf8")
     except Exception as e:
         print(
-            "Something went wrong opening 'clean_countries_information.txt'. Error message: "
-            + str(e)
+            "Something went wrong opening 'clean_countries_information.txt'.\
+            Error message: " + str(e)
         )
 
     # read file content
@@ -85,12 +86,14 @@ def populate_db():
     splitted = content.split("\n")
 
     # query for inserting into stateinfo table
-    query = "INSERT INTO stateinfo (name, capital, population, density, surface, language, timezone, regime, currency) \
+    query = "INSERT INTO stateinfo (name, capital, population, density,\
+        surface, language, timezone, regime, currency) \
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
     lines_list = list()
 
-    # iterate throuth all country informations to create touples for easy table insert
+    # iterate throuth all country informations to create
+    # touples for easy table insert
     for line in splitted:
         if line:
             # create toubles

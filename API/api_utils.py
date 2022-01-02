@@ -4,7 +4,7 @@ import json
 def get_json(data):
     """
     create a json from raw data
-    @data = 
+    @data =
     """
     informations = dict()
 

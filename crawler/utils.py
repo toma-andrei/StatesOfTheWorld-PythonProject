@@ -55,7 +55,8 @@ def clean_text(content):
     """
     Replace some characters
     @param content: The content to be midified
-    @returns: Same content as the input with deleted or modifed unusual characters
+    @returns: Same content as the input with deleted or modifed
+            unusual characters
     """
     content_clean = re.sub(r"\\", "", content)
     content_clean = re.sub(r"\[.*$", "", content_clean)
