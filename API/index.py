@@ -23,8 +23,8 @@ def main_page():
 def all_infos():
     """
     Execute query and get all informations about a country on route "/all"
-    @return json with data
 
+    @return json with data
     """
     global connection
     query = "SELECT * FROM stateinfo"
@@ -38,8 +38,9 @@ def all_infos():
 def get_top_by_cell(number, cell):
     """
     Get top for table fields with numerical value
-    @number = limit of top
-    @cell = field on which top is created (population, surface, density)
+
+    @param number = limit of top
+    @param cell = field on which top is created (population, surface, density)
     """
 
     global connection
