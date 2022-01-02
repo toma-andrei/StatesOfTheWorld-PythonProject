@@ -2,6 +2,10 @@ import json
 
 
 def get_json(data):
+    """
+    create a json from raw data
+    @data = 
+    """
     informations = dict()
 
     for info in data:

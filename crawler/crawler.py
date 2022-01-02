@@ -54,12 +54,15 @@ def get_and_write_URLs():
         )
 
     # remove old file if it exists
-    if os.path.exists("Informations/states_of_the_world.txt"):
-        os.remove("Informations/states_of_the_world.txt")
+    if os.path.exists("informations/states_of_the_world.txt"):
+        os.remove("informations/states_of_the_world.txt")
 
     # open and write to file full URL of each state
     try:
-        file = open("Informations/states_of_the_world.txt", "a", encoding="utf8")
+        file = open("informations/states_of_the_world.txt", "w", encoding="utf8")
+        file.close()
+        file = open("informations/states_of_the_world.txt", "a", encoding="utf8")
+
     except Exception as e:
         print(
             "Something went wrong creating/opening 'states_of_the_world.txt'. Error message: "
@@ -82,7 +85,7 @@ def get_raw_site_infos():
 
     """
     try:
-        links_file = open("Informations/states_of_the_world.txt", "r", encoding="utf8")
+        links_file = open("informations/states_of_the_world.txt", "r", encoding="utf8")
         links_file_content = links_file.read()
     except Exception as e:
         print(
@@ -91,13 +94,13 @@ def get_raw_site_infos():
         )
 
     # remove old file if it exists
-    if os.path.exists("Informations/wiki_states_infos.txt"):
-        os.remove("Informations/wiki_states_infos.txt")
+    if os.path.exists("informations/wiki_states_infos.txt"):
+        os.remove("informations/wiki_states_infos.txt")
 
     try:
         # create or open .txt file containing informations about countries
         wiki_state_info = open(
-            "Informations/wiki_states_infos.txt", "a", encoding="utf8"
+            "informations/wiki_states_infos.txt", "a", encoding="utf8"
         )
     except Exception as e:
         print(
@@ -141,7 +144,7 @@ def filter_raw_information():
 
     try:
         # read file and split information via delimiter
-        file = open("Informations/wiki_states_infos.txt", "r", encoding="utf8")
+        file = open("informations/wiki_states_infos.txt", "r", encoding="utf8")
         raw_content = file.read()
         raw_content_list = raw_content.split(delimiter)
         raw_content_list.pop()
@@ -162,9 +165,13 @@ def filter_raw_information():
     country_regime = list()
     country_currency = list()
 
+    #iterate through all informations about a country at a time
     for content in raw_content_list:
+
+        #create a soup instance
         soup = BeautifulSoup(content, "html.parser")
 
+        #get all informations about a country and put them to lists
         country_names.append(if_filter.filter_country_names(soup))
         capital_names.append((if_filter.filter_country_capital(soup)))
         country_population.append(if_filter.filter_country_population(soup))
@@ -182,7 +189,7 @@ def filter_raw_information():
     try:
         # create or open .txt file containing informations about countries
         final_file = open(
-            "../Database/clean_countries_information.txt", "a", encoding="utf8"
+            "../Database/clean_countries_information.txt", "w", encoding="utf8"
         )
     except Exception as e:
         print(
@@ -190,6 +197,7 @@ def filter_raw_information():
             + str(e)
         )
 
+    #concat all information separated with |
     for i in range(0, len(country_names)):
         line = (
             country_names[i]
@@ -211,7 +219,7 @@ def filter_raw_information():
             + country_currency[i]
             + "\n"
         )
-
+        #write information to file
         final_file.write(line)
 
     file.close()
@@ -228,8 +236,8 @@ def main():
 
     # functions inside below 'if' are called when there are 3 days past from them creation.
     if (
-        not os.path.exists("Informations/states_of_the_world.txt")
-        or time() - os.path.getctime("Informations/states_of_the_world.txt") >= 259200
+        not os.path.exists("informations/states_of_the_world.txt")
+        or time() - os.path.getctime("informations/states_of_the_world.txt") >= 259200
     ):
         get_and_write_URLs()
         get_raw_site_infos()
